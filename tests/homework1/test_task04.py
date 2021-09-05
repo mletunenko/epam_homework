@@ -12,4 +12,5 @@ def test_positive_check_2():
 
 
 def test_positive_check_3():
-    assert check_sum_of_four([1, 2, 3], [-1, -2, -3], [4, 5, 6], [-4, -3, -2]) == 10
+    assert check_sum_of_four(
+        [1, 2, 3], [-1, -2, -3], [4, 5, 6], [-4, -3, -2]) == 10
