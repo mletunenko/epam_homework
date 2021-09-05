@@ -1,5 +1,6 @@
-from homework1.task03 import find_maximum_and_minimum
 import tempfile
+
+from homework1.task03 import find_maximum_and_minimum
 
 
 def test_positive_find():
