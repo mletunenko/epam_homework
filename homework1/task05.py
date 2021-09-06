@@ -12,15 +12,15 @@ from typing import List
 def find_maximal_subarray_sum(nums: List[int], k: int) -> int:
     # Check that given list is not empty
     if not nums:
-        return 0
-    max_s = None
-    for w_size in range(1, k + 1):
-        for i in range(len(nums) - w_size + 1):
-            w = nums[i:i + w_size]
-            s = sum(w)
-            if max_s is None:
-                max_s = s
+        return None
+    max_sum = None
+    for window_size in range(1, k + 1):
+        for i in range(len(nums) - window_size + 1):
+            window = nums[i:i + window_size]
+            window_sum = sum(window)
+            if max_sum is None:
+                max_sum = window_sum
                 continue
-            if s > max_s:
-                max_s = s
-    return max_s
+            if window_sum > max_sum:
+                max_sum = window_sum
+    return max_sum

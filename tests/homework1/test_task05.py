@@ -12,4 +12,4 @@ def test_positive_find_2():
 
 
 def test_positive_find_3():
-    assert find_maximal_subarray_sum([], k=3) == 0
+    assert find_maximal_subarray_sum([], k=3) is None
