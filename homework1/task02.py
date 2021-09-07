@@ -8,27 +8,13 @@ from typing import Sequence
 
 
 def check_fibonacci(data: Sequence[int]) -> bool:
-    # Check if "data" is empty
-    if not data:
+    if data[0] != 0:
         return False
-    # Grow fib sec till meet first value of "data"
     fib_seq_last_but_one = 0
     fib_seq_last = 1
-    if fib_seq_last_but_one < data[0]:
-        while fib_seq_last < data[0]:
-            fib_seq_last_but_one, fib_seq_last = \
-                fib_seq_last, fib_seq_last + fib_seq_last_but_one
-    elif fib_seq_last_but_one > data[0]:
-        return False
-    # Now we are sure that data[0] <= fib_seq_last
-    first_zero_check = data[0] == 0  # need to skip first 0 from "data"
-    for value in data:
-        if first_zero_check:
-            first_zero_check = False
-            continue
-        else:
-            if fib_seq_last != value:
-                return False
-            fib_seq_last_but_one, fib_seq_last = \
-                fib_seq_last, fib_seq_last + fib_seq_last_but_one
+    for value in data[1:]:
+        if fib_seq_last != value:
+            return False
+        fib_seq_last_but_one, fib_seq_last = \
+            fib_seq_last, fib_seq_last + fib_seq_last_but_one
     return True
