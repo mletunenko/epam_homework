@@ -15,7 +15,7 @@ def get_longest_diverse_words(file_path: str) -> List[str]:
         for line in file:
             for word in line.split():
                 # Cut the punctuation from word
-                word = word.strip("""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~""")
+                word = word.strip(r"""!"#$%&'()*+,-./:;<=>?@[]^_`\{|}~""")
                 number = len(set(word))
                 # Check if storage less then 10 words
                 if len(storage) < 10:

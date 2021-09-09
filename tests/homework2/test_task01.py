@@ -17,7 +17,7 @@ def test_get_longest_diverse_word_data_txt_test():
 
 def test_get_longest_diverse_word_10_word():
     with tempfile.NamedTemporaryFile(mode='w') as temporary_file:
-        temporary_file.write("""Lorem ipsum dolor sit amet, consectetur 
+        temporary_file.write("""Lorem ipsum dolor sit amet, consectetur
         adipiscing elit. Nunc blandit.""")
         temporary_file.flush()
         assert set(get_longest_diverse_words(temporary_file.name)) == \
@@ -28,7 +28,7 @@ def test_get_longest_diverse_word_10_word():
 def test_get_longest_diverse_many_punctuation():
     with tempfile.NamedTemporaryFile(mode='w') as temporary_file:
         temporary_file.write("""
-        @Lorem@ ipsum$% &* )(dolor": sit<>< <amet, 
+        @Lorem@ ipsum$% &* )(dolor": sit<>< <amet,
         ><consectetur adipiscing>< elit. Nunc^&* %^ blandit.
         """)
         temporary_file.flush()
@@ -50,7 +50,7 @@ def test_get_rarest_char_in_single_char_file():
 
 def test_get_rarest_char_in_empty_file():
     with tempfile.NamedTemporaryFile() as temporary_file:
-        assert get_rarest_char(temporary_file.name) == None
+        assert get_rarest_char(temporary_file.name) is None
 
 
 def test_count_punctuation_common_test():
@@ -93,11 +93,11 @@ def test_get_most_common_non_ascii_char_common_test():
 
 def test_get_most_common_non_ascii_char_empty_file():
     with tempfile.NamedTemporaryFile() as empty_file:
-        assert get_most_common_non_ascii_char(empty_file.name) == None
+        assert get_most_common_non_ascii_char(empty_file.name) is None
 
 
 def test__get_most_common_non_ascii_char_only_ascii():
     with tempfile.NamedTemporaryFile(mode='w') as temporary_file:
         temporary_file.write('Qwerty 1234 <>?:"')
         temporary_file.flush()
-        assert get_most_common_non_ascii_char(temporary_file.name) == None
+        assert get_most_common_non_ascii_char(temporary_file.name) is None
