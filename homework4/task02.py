@@ -20,18 +20,22 @@ You will learn:
 * https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen
 """
 
-import urllib.request
 import urllib.error
+import urllib.request
 
 
 def count_dots_on_i(url: str) -> int:
+    # try to open url
     try:
-        webUrl = urllib.request.urlopen(url)
+        response = urllib.request.urlopen(url)
+    # raise the Error if not
     except urllib.error.URLError:
         raise ValueError(f'Unreachable {url}')
-
+    # create a counter for 'i' char
     counter = 0
-    data = webUrl.read().decode('utf-8')
+    # read and decode response
+    data = response.read().decode('utf-8')
+    # count a 'i' char
     for char in data:
         if char == 'i':
             counter += 1

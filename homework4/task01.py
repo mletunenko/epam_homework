@@ -28,9 +28,13 @@ You will learn:
 
 
 def read_magic_number(path: str) -> bool:
+    # try to open some path
     try:
         with open(path, 'r') as file:
+            # read a first line in file
             line = file.readline()
+            # return True if there int in [1, 3), and False otherwise
             return 1 <= int(line) < 3
+    # replace any exception with ValueError
     except Exception:
         raise ValueError
