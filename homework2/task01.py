@@ -10,6 +10,7 @@ from typing import List
 
 
 def get_longest_diverse_words(file_path: str) -> List[str]:
+    # Create a storage list which contains a tuple (len of word, word)
     storage = []
     with open(file_path, encoding='unicode-escape') as file:
         for line in file:
@@ -96,10 +97,7 @@ def count_non_ascii_chars(file_path: str) -> int:
     # Create a counter
     counter = 0
     with open(file_path, encoding='unicode-escape') as file:
-        while True:
-            line = file.readline()
-            if not line:
-                break
+        for line in file:
             for char in line:
                 # Check if char is not ascii char
                 if not char.isascii():
@@ -123,5 +121,5 @@ def get_most_common_non_ascii_char(file_path: str) -> str:
     if counter_dict:
         most_common_char = max(counter_dict.items(), key=lambda x: x[1])[0]
     else:
-        most_common_char = None
+        most_common_char = ''
     return most_common_char
