@@ -1,4 +1,5 @@
 import tempfile
+
 import pytest
 
 from homework4.task01 import read_magic_number
