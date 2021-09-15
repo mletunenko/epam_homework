@@ -1,6 +1,10 @@
 # I decided to write a code that generates data filtering object
 # from a list of keyword parameters:
 
+
+from typing import List, Dict
+
+
 class Filter:
     """
         Helper filter class. Accepts a list of single-argument
@@ -10,7 +14,7 @@ class Filter:
     def __init__(self, functions):
         self.functions = functions
 
-    def apply(self, data):
+    def apply(self, data: List) -> List:
         return [
             item for item in data
             if all(i(item) for i in self.functions)
@@ -23,14 +27,14 @@ class Filter:
 # positive_even.apply(range(100)) should return only even numbers from 0 to 99
 
 
-def make_filter(**keywords):
+def make_filter(**keywords: str) -> Filter:
     """
         Generate filter object for specified keywords
     """
     filter_funcs = []
     for key, value in keywords.items():
         # fixed a name of arg
-        def keyword_filter_func(data):
+        def keyword_filter_func(data: Dict, key=key, value=value) -> bool:
             # processing of non-existing keys added
             try:
                 return data[key] == value
@@ -42,17 +46,17 @@ def make_filter(**keywords):
 
 
 sample_data = [
-    {
-        "name": "Bill",
-        "last_name": "Gilbert",
-        "occupation": "was here",
-        "type": "person",
-    },
+    # {
+    #     "name": "Bill",
+    #     "last_name": "Gilbert",
+    #     "occupation": "was here",
+    #     "type": "person",
+    # },
     {
         "is_dead": True,
         "kind": "parrot",
         "type": "bird",
-        "name": "polly"
+        "name": "polly----"
     }
 ]
 
