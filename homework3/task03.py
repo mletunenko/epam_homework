@@ -2,7 +2,7 @@
 # from a list of keyword parameters:
 
 
-from typing import List, Dict
+from typing import Dict, List
 
 
 class Filter:
