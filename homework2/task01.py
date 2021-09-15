@@ -49,43 +49,30 @@ def get_rarest_char(file_path: str) -> str:
         rarest_char = file.read(1)
         # Check if file is not empty
         if not rarest_char:
-            return None
+            return ''
         # Move seek to the beginning of file
         file.seek(0)
-        while True:
-            # Read a file line by line
-            line = file.readline()
-            # Stop reading if a file is ended
-            if not line:
-                break
+        # Read a file line by line
+        for line in file:
             # Read line char by char
             for char in line:
                 # Create a key if char is new
-                if char not in count_dict:
-                    count_dict[char] = 0
+                count_dict.setdefault(char, 0)
                 # Count a char
                 count_dict[char] += 1
-    # Looking for rarest char in counter dict
-    for key in count_dict:
-        if count_dict[key] < count_dict[rarest_char]:
-            rarest_char = key
-    return rarest_char
+    # get rarest char in counter dict
+    return min(count_dict, key=count_dict.get)
 
 
 def count_punctuation_chars(file_path: str) -> int:
     # Know every punctuation char
-    punctuation = r"""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
+    punctuation = """!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"""
     # Declare a counter
     counter = 0
     # Open a file
     with open(file_path, encoding='unicode-escape') as file:
-        while True:
-            # Read a file line by line
-            line = file.readline()
-            # Stop reading if a file is ended
-            if not line:
-                break
-            # Read a line char by char
+        # Read a file line by line
+        for line in file:
             for char in line:
                 # Check if char is punctuation
                 if char in punctuation:
@@ -109,17 +96,14 @@ def count_non_ascii_chars(file_path: str) -> int:
 def get_most_common_non_ascii_char(file_path: str) -> str:
     counter_dict = {}
     with open(file_path, encoding='unicode-escape') as file:
-        while True:
-            line = file.readline()
-            if not line:
-                break
+        for line in file:
             for char in line:
                 if not char.isascii():
                     if char not in counter_dict:
                         counter_dict[char] = 0
                     counter_dict[char] += 1
     if counter_dict:
-        most_common_char = max(counter_dict.items(), key=lambda x: x[1])[0]
+        most_common_char = max(counter_dict, key=counter_dict.get)
     else:
         most_common_char = ''
     return most_common_char

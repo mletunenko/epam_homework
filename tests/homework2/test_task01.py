@@ -50,7 +50,7 @@ def test_get_rarest_char_in_single_char_file():
 
 def test_get_rarest_char_in_empty_file():
     with tempfile.NamedTemporaryFile() as temporary_file:
-        assert get_rarest_char(temporary_file.name) is None
+        assert get_rarest_char(temporary_file.name) == ''
 
 
 def test_count_punctuation_common_test():
@@ -93,11 +93,11 @@ def test_get_most_common_non_ascii_char_common_test():
 
 def test_get_most_common_non_ascii_char_empty_file():
     with tempfile.NamedTemporaryFile() as empty_file:
-        assert get_most_common_non_ascii_char(empty_file.name) is None
+        assert get_most_common_non_ascii_char(empty_file.name) == ''
 
 
 def test__get_most_common_non_ascii_char_only_ascii():
     with tempfile.NamedTemporaryFile(mode='w') as temporary_file:
         temporary_file.write('Qwerty 1234 <>?:"')
         temporary_file.flush()
-        assert get_most_common_non_ascii_char(temporary_file.name) is None
+        assert get_most_common_non_ascii_char(temporary_file.name) == ''

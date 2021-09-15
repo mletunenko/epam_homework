@@ -16,4 +16,8 @@ from typing import Any, List
 
 
 def combinations(*args: List[Any]) -> List[List]:
-    return [list(i) for i in itertools.product(*args)]
+    result =[[]]
+    pools = [tuple(pool) for pool in args]
+    for pool in pools:
+        result = [x + [y] for x in result for y in pool]
+    return result
