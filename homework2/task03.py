@@ -11,12 +11,12 @@ assert combinations([1, 2], [3, 4]) == [
     [2, 4],
 ]
 """
-import itertools
+
 from typing import Any, List
 
 
 def combinations(*args: List[Any]) -> List[List]:
-    result =[[]]
+    result = [[]]
     pools = [tuple(pool) for pool in args]
     for pool in pools:
         result = [x + [y] for x in result for y in pool]
