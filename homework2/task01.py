@@ -10,85 +10,57 @@ from typing import List
 
 
 def get_longest_diverse_words(file_path: str) -> List[str]:
-    # Create a storage list which contains a tuple (len of word, word)
     storage = []
     with open(file_path, encoding='unicode-escape') as file:
         for line in file:
             for word in line.split():
-                # Cut the punctuation from word
-                word = word.strip(r"""!"#$%&'()*+,-./:;<=>?@[]^_`\{|}~""")
+                word = word.strip("""!"#$%&'()*+,-./:;<=>?@[]^_`\\{|}~""")
                 number = len(set(word))
-                # Check if storage less then 10 words
                 if len(storage) < 10:
-                    # Put the word into storage
                     storage.append((number, word))
-                    # Check if storage have 10 words
                     if len(storage) == 10:
-                        # Sort a storage, to have shortest word in zero pos
                         storage.sort(key=lambda x: x[0], reverse=True)
-                # Check if word enough good to put in storage
                 elif number > storage[-1][0]:
-                    # Looking for place for new word
                     for index, (stored_number, stored_word) in enumerate(
                             storage):
-                        # Insert word by len
                         if number > stored_number:
                             storage.insert(index, (number, word))
-                            # Take the 10 longest word in storage
                             storage = storage[:10]
                             break
     return [elem[1] for elem in storage]
 
 
 def get_rarest_char(file_path: str) -> str:
-    # Create a counter dictionary
     count_dict = {}
-    # Open file data.txt
     with open(file_path, encoding='unicode-escape') as file:
-        # Try to take a first char as rarest
         rarest_char = file.read(1)
-        # Check if file is not empty
         if not rarest_char:
             return ''
-        # Move seek to the beginning of file
         file.seek(0)
-        # Read a file line by line
         for line in file:
-            # Read line char by char
             for char in line:
-                # Create a key if char is new
                 count_dict.setdefault(char, 0)
-                # Count a char
                 count_dict[char] += 1
-    # get rarest char in counter dict
     return min(count_dict, key=count_dict.get)
 
 
 def count_punctuation_chars(file_path: str) -> int:
-    # Know every punctuation char
     punctuation = """!"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"""
-    # Declare a counter
     counter = 0
-    # Open a file
     with open(file_path, encoding='unicode-escape') as file:
-        # Read a file line by line
         for line in file:
             for char in line:
-                # Check if char is punctuation
                 if char in punctuation:
                     counter += 1
     return counter
 
 
 def count_non_ascii_chars(file_path: str) -> int:
-    # Create a counter
     counter = 0
     with open(file_path, encoding='unicode-escape') as file:
         for line in file:
             for char in line:
-                # Check if char is not ascii char
                 if not char.isascii():
-                    # Count if not
                     counter += 1
     return counter
 
