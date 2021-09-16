@@ -5,7 +5,6 @@ capabilities of multiprocessing module. You are not allowed to modify
 slow_calculate function.
 """
 import hashlib
-import os
 import random
 import struct
 import time
