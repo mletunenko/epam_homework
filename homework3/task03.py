@@ -2,7 +2,7 @@
 # from a list of keyword parameters:
 
 
-from typing import Dict, List
+from typing import Dict, List, Any
 
 
 class Filter:
@@ -11,7 +11,7 @@ class Filter:
         functions that return True if object in list conforms to some criteria
     """
 
-    def __init__(self, functions):
+    def __init__(self, functions: List) -> None:
         self.functions = functions
 
     def apply(self, data: List) -> List:
@@ -34,10 +34,11 @@ def make_filter(**keywords: str) -> Filter:
     filter_funcs = []
     for key, value in keywords.items():
         # fixed a name of arg
-        def keyword_filter_func(data: Dict, key=key, value=value) -> bool:
+        def keyword_filter_func(data: Dict[str, Any],
+                                key_f=key, value_f=value) -> bool:
             # processing of non-existing keys added
             try:
-                return data[key] == value
+                return data[key_f] == value_f
             except KeyError:
                 return False
 
