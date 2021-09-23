@@ -1,6 +1,4 @@
 import urllib.error
-from io import BytesIO
-from unittest import mock
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -18,10 +16,7 @@ def test_count_dots_positive_case_20_1(mock_urlopen):
     assert result == 20
 
 
-@patch('urllib.request.urlopen')
+@patch('urllib.request.urlopen', side_effect=urllib.error.URLError('f'))
 def test_count_dots_error_1(mock_urlopen):
-    # response = MagicMock(side_effect=Exception(urllib.error.URLError))
-    mock_urlopen.side_effect = urllib.error.URLError('f')
-
     with pytest.raises(ValueError):
         count_dots_on_i('foo')
