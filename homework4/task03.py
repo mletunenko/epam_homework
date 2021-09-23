@@ -19,10 +19,7 @@ import sys
 
 
 def my_precious_logger(text: str):
-    # check if first word in text is 'error'
-    if text.split(' ')[0].strip(':') == 'error':
-        # standard error if it is
+    if text.startswith('error'):
         sys.stderr.write(text)
-    # standart output if not
     else:
         sys.stdout.write(text)
