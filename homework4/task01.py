@@ -32,5 +32,5 @@ def read_magic_number(path: str) -> bool:
         line = file.readline()
         try:
             return 1 <= int(line) < 3
-        except (OSError, ValueError):
+        except (PermissionError, FileNotFoundError, ValueError):
             raise ValueError
