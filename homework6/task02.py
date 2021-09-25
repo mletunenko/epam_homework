@@ -68,11 +68,13 @@ class Homework:
         return self.text
 
 
-
 class Student(Human):
 
     def do_homework(self, homework_obj, homework_result):
-        return HomeworkResult(self, homework_obj, homework_result)
+        if homework_obj.is_active():
+            return HomeworkResult(self, homework_obj, homework_result)
+        else:
+            raise DeadlineError('You are late')
 
 
 class Teacher(Human):
