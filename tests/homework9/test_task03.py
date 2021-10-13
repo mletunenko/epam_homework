@@ -1,16 +1,38 @@
+import tempfile
+
 from homework9.task03 import universal_file_counter
 
 
 def test_universal_file_counter_without_tokenizer():
-    assert universal_file_counter('/Users/maria/epam/epam_homework/'
-                                  'tests/homework9', 'txt') == 4
+    with tempfile.TemporaryDirectory() as temp_directory:
+        with tempfile.NamedTemporaryFile(mode='w+t', dir=temp_directory,
+                                         suffix='.txt') as temp_file:
+            temp_file.write("""1
+            2
+            4 5""")
+            temp_file.flush()
+            assert universal_file_counter(temp_directory, 'txt') == 3
 
 
 def test_universal_file_counter_with_tokenizer():
-    assert universal_file_counter('/Users/maria/epam/epam_homework/'
-                                  'tests/homework9', 'txt', str.split) == 10
+    with tempfile.TemporaryDirectory() as temp_directory:
+        with tempfile.NamedTemporaryFile(mode='w+t', dir=temp_directory,
+                                         suffix='.txt') as temp_file:
+            temp_file.write("""1
+            2
+            4 5""")
+            temp_file.flush()
+            assert universal_file_counter(temp_directory, 'txt',
+                                          str.split) == 4
 
 
 def test_universal_file_counter_no_goal_files_in_dir():
-    assert universal_file_counter('/Users/maria/epam/epam_homework/'
-                                  'tests/homework9', 'json', str.split) == 0
+    with tempfile.TemporaryDirectory() as temp_directory:
+        with tempfile.NamedTemporaryFile(mode='w+t', dir=temp_directory,
+                                         suffix='.txt') as temp_file:
+            temp_file.write("""1
+            2
+            4 5""")
+            temp_file.flush()
+            assert universal_file_counter(temp_directory, 'json',
+                                          str.split) == 0
