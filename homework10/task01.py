@@ -9,19 +9,19 @@ import bs4
 from pyparsing import unicode
 
 
-def get_dollar_prise() -> float:
-    page = urllib.request.urlopen('https://www.cbr.ru/scripts/XML_daily.asp?')
-    currecy_soup = bs4.BeautifulSoup(page, 'html.parser')
-    dollar_usa = currecy_soup.find('valute', {'id': "R01235"})
-    return float(dollar_usa.value.string.replace(',', '.'))
-
-
 def get_urls_list():
     urls = []
     base_url = 'https://markets.businessinsider.com/index/components/s&p_500'
     for i in range(1, 12):
         urls.append(base_url + '?p=' + str(i))
     return urls
+
+
+def get_dollar_prise() -> float:
+    page = urllib.request.urlopen('https://www.cbr.ru/scripts/XML_daily.asp?')
+    currecy_soup = bs4.BeautifulSoup(page, 'html.parser')
+    dollar_usa = currecy_soup.find('valute', {'id': "R01235"})
+    return float(dollar_usa.value.string.replace(',', '.'))
 
 
 async def get_table_from_page(url):
