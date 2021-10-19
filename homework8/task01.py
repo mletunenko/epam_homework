@@ -2,6 +2,14 @@ from typing import Dict
 
 
 class KeyValueStorage:
+    builtins_attr = [
+        '__dict__',
+        '__doc__',
+        '__name__',
+        '_module__',
+        '__bases__'
+    ]
+
     def __init__(self, path_to_file: str):
         storage_dictionary = self.file_to_dict(path_to_file)
         for key, value in storage_dictionary.items():
@@ -20,7 +28,7 @@ class KeyValueStorage:
 
     def __setattr__(self, key, value):
         if self.check_key_is_not_built_in(key):
-            self.__dict__[key] = value
+            super().__setattr__(key, value)
 
     def __setitem__(self, key, value):
         if self.check_key_is_not_built_in(key):
@@ -41,13 +49,4 @@ class KeyValueStorage:
         return int(value) if value.isdigit() else value
 
     def check_key_is_not_built_in(self, key):
-        return True if key not in self.__dir__() else False
-
-
-#
-# a = KeyValueStorage('example.txt')
-# print(a.__dir__())
-# atr1 = (a.__str__)
-# a.__str__ = 123
-# atr2 = (a.__str__)
-# print(atr1 == atr2)
+        return True if key not in self.builtins_attr else False

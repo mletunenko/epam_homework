@@ -10,14 +10,13 @@ class TableData:
         with sq.connect(self.database_name) as connect:
             self.connection = connect
             cursor = self.connection.cursor()
-            request = f'SELECT age FROM "{self.table_name}" ' \
-                      f'WHERE name = "{item}"'
-            return cursor.execute(request).fetchone()[0]
+            request = f'SELECT age FROM {self.table_name} ' \
+                      f'WHERE name = :pres_name'
+            return cursor.execute(request, {'pres_name': item}).fetchone()[0]
 
     def __len__(self):
         with sq.connect(self.database_name) as connect:
             cursor = connect.cursor()
-            # print('IN LEN METHOD')
             return (
                 cursor.execute(
                     f'SELECT COUNT(*) FROM {self.table_name}').fetchone()[
@@ -27,7 +26,8 @@ class TableData:
         with sq.connect(self.database_name) as connect:
             self.connection = connect
             self.cursor = self.connection.cursor()
-            self.cursor.execute(f'SELECT * FROM {self.table_name}')
+            sql_request = f'SELECT * FROM {self.table_name}'
+            self.cursor.execute(sql_request)
             column_name_list = []
             for column in self.cursor.description:
                 column_name_list.append(column[0])

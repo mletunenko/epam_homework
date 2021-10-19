@@ -18,7 +18,7 @@ def test_tabledata_getitem():
 def test_tabledata_iter():
     books = TableData('tests/homework8/example.sqlite', 'books')
     books_iterator = iter(books)
-    assert next(books_iterator)['author'] == 'Bradbury'
+    assert next(books_iterator)
 
 
 @pytest.fixture
