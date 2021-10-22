@@ -34,3 +34,28 @@ def backspace(string: str):
             else:
                 back -= 1
     return result
+
+
+def second_backspace_compare(first: str, second: str):
+    first_generator = second_backspace(first)
+    second_generator = second_backspace(second)
+    symbol_pairs = zip(first_generator, second_generator)
+    for pair in symbol_pairs:
+        if pair[0] == pair[1]:
+            continue
+        else:
+            return False
+    return True
+
+
+def second_backspace(string: str):
+    back = 0
+    list_string = list(string)
+    for position, symbol in enumerate(list_string[::-1]):
+        if symbol == '#':
+            back += 1
+        else:
+            if back:
+                back -= 1
+            else:
+                yield symbol
