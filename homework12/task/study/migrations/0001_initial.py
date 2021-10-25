@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,7 +14,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Homework',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                                           primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('text', models.CharField(db_index=True, max_length=100)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('deadline', models.DurationField()),
@@ -24,7 +26,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Student',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                                           primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('last_name', models.CharField(db_index=True, max_length=50)),
                 ('first_name', models.CharField(max_length=50)),
             ],
@@ -35,7 +40,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Teacher',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                                           primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('last_name', models.CharField(db_index=True, max_length=50)),
                 ('first_name', models.CharField(max_length=50)),
                 ('homework_done', models.ManyToManyField(to='study.Homework')),
@@ -47,11 +55,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='HomeworkResult',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True,
+                                           serialize=False,
+                                           verbose_name='ID')),
                 ('solution', models.CharField(db_index=True, max_length=200)),
                 ('created', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='study.student')),
-                ('homework', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='study.homework')),
+                ('author', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='study.student')),
+                ('homework', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    to='study.homework')),
             ],
         ),
     ]
