@@ -1,6 +1,5 @@
 import asyncio
 import json
-import time
 import urllib.request
 from typing import List
 
@@ -12,8 +11,22 @@ from pyparsing import unicode
 def get_urls_list():
     urls = []
     base_url = 'https://markets.businessinsider.com/index/components/s&p_500'
-    for i in range(1, 12):
-        urls.append(base_url + '?p=' + str(i))
+    base_page = urllib.request.urlopen(base_url)
+    class_name = "finando_paging margin-top--small"
+    base_soup = bs4.BeautifulSoup(base_page, 'html.parser')
+    begin_of_pagination = (base_soup.find(class_=class_name).find('a'))
+    first_url = base_url + begin_of_pagination['href']
+    urls.append(first_url)
+    while True:
+        next_page = urllib.request.urlopen(urls[-1])
+        next_soup = bs4.BeautifulSoup(next_page, 'html.parser')
+        next_pagination = (next_soup.find(class_=class_name).find(
+            'strong').parent.next_sibling.next_sibling)
+        if next_pagination:
+            next_url = base_url + next_pagination['href']
+            urls.append(next_url)
+        else:
+            break
     return urls
 
 
@@ -116,9 +129,9 @@ def get_top_companies(all_companies_list, key, reverse_value) -> List:
 
 
 if __name__ == '__main__':
-    start_time = time.time()
     dollar_price = get_dollar_prise()
     all_pages_urls = get_urls_list()
+    print(all_pages_urls)
     all_companies_list = asyncio.run(main(all_pages_urls))
     data_for_file = [
         {
