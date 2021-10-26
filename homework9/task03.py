@@ -8,7 +8,6 @@ For dir with two files from hw1.py:
 # >>> universal_file_counter(test_dir, "txt", str.split)
 6
 """
-import os
 from pathlib import Path
 from typing import Callable, Optional
 
@@ -17,11 +16,10 @@ def universal_file_counter(
         dir_path: Path, file_extension: str,
         tokenizer: Optional[Callable] = None
 ) -> int:
-    files = os.listdir(dir_path)
-    goal_files = list(filter(lambda x: x.endswith(file_extension), files))
+    goal_files = list(dir_path.glob(f'*.{file_extension}'))
     counter = 0
     for file in goal_files:
-        with open(dir_path + '/' + file) as fl:
+        with open(file) as fl:
             for row in fl:
                 if tokenizer:
                     counter += len(tokenizer(row))

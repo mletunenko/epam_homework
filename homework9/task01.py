@@ -23,3 +23,17 @@ def merge_sorted_files(file_list: List[Union[Path, str]]) -> Iterator:
                 if row:
                     result_list.append(int(row))
     return iter(sorted(result_list))
+
+
+def merge_sorted_files_float(file_list: List[Union[Path, str]]) -> Iterator:
+    result_list = []
+    for file in file_list:
+        with open(file) as file:
+            for row in file:
+                row = row.strip()
+                if row:
+                    if '.' in row:
+                        result_list.append(float(row))
+                    else:
+                        result_list.append(int(row))
+    return iter(sorted(result_list))

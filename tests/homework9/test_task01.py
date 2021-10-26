@@ -2,7 +2,7 @@ import tempfile
 from collections import Iterator
 from pathlib import Path
 
-from homework9.task01 import merge_sorted_files
+from homework9.task01 import merge_sorted_files, merge_sorted_files_float
 
 
 def test_merge_sorted_str_source():
@@ -66,3 +66,15 @@ def test_merge_sorted_output_is_sort():
         """)
         temp_file1.flush()
         assert list(merge_sorted_files([temp_file1.name])) == [-1, 0, 76]
+
+
+def test_merge_sorted_float_digit():
+    with tempfile.NamedTemporaryFile(mode='w+t') as temp_file1:
+        temp_file1.write("""
+        1.2
+        -1
+        0
+        """)
+        temp_file1.flush()
+        assert list(merge_sorted_files_float([temp_file1.name])) == [-1, 0,
+                                                                     1.2]
