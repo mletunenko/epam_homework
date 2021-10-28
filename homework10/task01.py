@@ -2,6 +2,7 @@ import asyncio
 import json
 import urllib.request
 from typing import List
+
 import aiohttp
 import bs4
 from pyparsing import unicode
