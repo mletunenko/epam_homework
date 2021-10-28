@@ -2,7 +2,6 @@ import asyncio
 import json
 import urllib.request
 from typing import List
-
 import aiohttp
 import bs4
 from pyparsing import unicode
@@ -30,30 +29,33 @@ def get_urls_list():
     return urls
 
 
-def get_dollar_prise() -> float:
+def get_dollar_priсe() -> float:
     page = urllib.request.urlopen('https://www.cbr.ru/scripts/XML_daily.asp?')
-    currecy_soup = bs4.BeautifulSoup(page, 'html.parser')
-    dollar_usa = currecy_soup.find('valute', {'id': "R01235"})
+    currency_soup = bs4.BeautifulSoup(page, 'html.parser')
+    dollar_usa = currency_soup.find('valute', {'id': "R01235"})
     return float(dollar_usa.value.string.replace(',', '.'))
 
 
-async def get_table_from_page(url):
+async def built_main_data_list(company_tag):
+    data = []
+    one_company_dictionary = await parse_data_from_company_page({
+        'detail_url': get_one_comp(company_tag),
+        'growth': float(
+            company_tag.find_all('td')[-1].find_all('span')[1].string.strip(
+                '% '))
+    })
+    data.append(one_company_dictionary)
+    return data
+
+
+async def get_companies_tags_from_page(url_of_page):
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
+        async with session.get(url_of_page) as resp:
             page = await resp.text()
             page_soup = bs4.BeautifulSoup(page, 'html.parser')
-            list_50 = page_soup.find('tbody', class_='table__tbody').find_all(
-                'tr')
-            data = []
-            for row in list_50:
-                comp_dict = await parse_one_company({
-                    'detail_url': get_one_comp(row),
-                    'growth': float(
-                        row.find_all('td')[-1].find_all('span')[
-                            1].string.strip('% '))
-                })
-                data.append(comp_dict)
-            return data
+            companies_tags_from_one_page_list = \
+                page_soup.find('tbody', class_='table__tbody').find_all('tr')
+            return companies_tags_from_one_page_list
 
 
 def get_one_comp(company_tag):
@@ -65,11 +67,11 @@ def convert_navigable_string_to_int(navigable_string):
     return float(unicode(navigable_string).replace(',', ''))
 
 
-def convert_str_to_float(str):
-    return float(str.replace(',', ''))
+def convert_str_to_float(string):
+    return float(string.replace(',', ''))
 
 
-async def parse_one_company(company):
+async def parse_data_from_company_page(company):
     async with aiohttp.ClientSession() as session:
         async with session.get(company['detail_url']) as resp:
             company_page = await resp.text()
@@ -81,17 +83,17 @@ async def parse_one_company(company):
             raw_week_high = company_soup.find('div', string='52 Week High')
             if raw_week_low and raw_week_high:
                 week_low = convert_str_to_float(
-                    list((raw_week_low.parent.strings))[0].strip())
+                    list(raw_week_low.parent.strings)[0].strip())
                 week_high = convert_str_to_float(
-                    list((raw_week_high.parent.strings))[0].strip())
+                    list(raw_week_high.parent.strings)[0].strip())
                 company['potential profit'] = round(
                     (week_high - week_low) * 100 / week_low, 2)
             else:
                 company['potential profit'] = 0
-            PE = company_soup.find('div', string='P/E Ratio')
-            if PE:
+            pe = company_soup.find('div', string='P/E Ratio')
+            if pe:
                 company['P/E'] = convert_str_to_float(
-                    PE.previousSibling.string.strip())
+                    pe.previousSibling.string.strip())
             else:
                 company['P/E'] = 0
             company['name'] = company_soup.find(
@@ -103,16 +105,17 @@ async def parse_one_company(company):
             return company
 
 
-async def main(all_pages_urls):
-    tasks = []
-    rez = []
+async def main(pages_urls):
+    companies_result_list = []
+    companies_tags_list = []
 
-    for url in all_pages_urls:
-        tasks.append(asyncio.create_task(get_table_from_page(url)))
+    for url in pages_urls:
+        companies_tags_list += await get_companies_tags_from_page(url)
 
-    for task in tasks:
-        rez += await task
-    return rez
+    for company_tag in companies_tags_list:
+        companies_result_list += await built_main_data_list(company_tag)
+
+    return companies_result_list
 
 
 def save_top_companies(companies_list, file_name, key, reverse_value):
@@ -129,9 +132,8 @@ def get_top_companies(all_companies_list, key, reverse_value) -> List:
 
 
 if __name__ == '__main__':
-    dollar_price = get_dollar_prise()
+    dollar_price = get_dollar_priсe()
     all_pages_urls = get_urls_list()
-    print(all_pages_urls)
     all_companies_list = asyncio.run(main(all_pages_urls))
     data_for_file = [
         {

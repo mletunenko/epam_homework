@@ -2,12 +2,12 @@ import os
 
 import pytest
 
-from homework10.task01 import (get_dollar_prise, get_urls_list,
+from homework10.task01 import (get_dollar_priсe, get_urls_list,
                                save_top_companies)
 
 
 def test_get_dollar_prise():
-    assert isinstance(get_dollar_prise(), float)
+    assert isinstance(get_dollar_priсe(), float)
 
 
 def test_get_urls_list_is_list():
