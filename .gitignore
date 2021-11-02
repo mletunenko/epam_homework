@@ -140,3 +140,4 @@ cython_debug/
 .DS_Store
 
 .idea
+homework12/task/mysite/secret_settings.py
