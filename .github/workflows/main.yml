@@ -17,6 +17,5 @@ jobs:
         run: |
           pip install flake8 isort pytest aiohttp bs4
           ls -la
-          flake8 .
           isort --check .
           py.test tests
